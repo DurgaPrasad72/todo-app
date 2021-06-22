@@ -1,11 +1,38 @@
-import React from "react";
-import "./style.css";
+import React,{useState} from 'react'
+import TodoList from './TodoList';
 
-export default function App() {
+const App = () => {
+  const [task,setTask] = useState("");
+  const [todos,setTodos] = useState([]);
+
+  const changeHandler = e =>{
+    setTask(e.target.value)
+  }
+  const submitHandler = e =>{
+    e.preventDefault();
+    const newTodos = [...todos,task];
+    setTodos(newTodos);
+    setTask("");
+  }
+  const deleteHandler = (indexValue) =>{
+    const newTodos = todos.filter((todo,index) => index !== indexValue);
+    setTodos(newTodos);
+  }
   return (
     <div>
-      <h1>Hello StackBlitz!</h1>
-      <p>Start editing to see some magic happen :)</p>
+      <center>
+          <div className="todo">
+            <h5 className="todo_heading">Todo application</h5>
+            <form onSubmit={submitHandler}>
+              <input type="text" name="task" value={task} onChange={changeHandler} /> <br/>
+              <br/>
+              <input type="submit" value="Add" name="Add"/>
+            </form>
+            <TodoList todolist={todos} deleteHandler={deleteHandler}/>
+          </div>
+      </center>
     </div>
-  );
+  )
 }
+
+export default App
